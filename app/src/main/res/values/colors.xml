@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Original colors -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Dental Theme Colors -->
+    <color name="primary_dental_blue">#FF1E88E5</color>
+    <color name="primary_dark_blue">#FF1565C0</color>
+    <color name="accent_dental_cyan">#FF00BCD4</color>
+    <color name="accent_teal">#FF009688</color>
+    <color name="light_blue_bg">#FFF0F8FF</color>
+    <color name="dental_gray">#FF757575</color>
+
+    <!-- Splash Screen Colors -->
+    <color name="splash_background">#FF1E88E5</color>
+    <color name="splash_gradient_start">#FF1E88E5</color>
+    <color name="splash_gradient_end">#FF009688</color>
+    <color name="splash_text_secondary">#FFE0F2F1</color>
+    
+    <!-- Emergency Support Colors -->
+    <color name="red">#FFD32F2F</color>
+    <color name="orange">#FFFF9800</color>
+    <color name="yellow">#FFFFC107</color>
+    <color name="green">#FF4CAF50</color>
+    <color name="blue">#FF1E88E5</color>
+    <color name="grey">#FF757575</color>
+</resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7FA">
+
+    <!-- Top Tab Strip -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/top_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/white"
+        android:elevation="2dp"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabTextColor="#6B7C8F"
+        app:tabSelectedTextColor="#4A90E2"
+        app:tabIndicatorColor="#4A90E2"
+        app:tabIndicatorHeight="3dp"
+        app:tabTextAppearance="@style/TabTextStyle" />
+
+    <!-- Header Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#4A90E2"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="16dp"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/btnClose"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:padding="8dp"
+            android:tint="@android:color/white"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Close" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dental History"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- Content Tabs -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/history_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        app:tabTextColor="#6B7C8F"
+        app:tabSelectedTextColor="#4A90E2"
+        app:tabIndicatorColor="#4A90E2" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_content_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+    <Button
+        android:id="@+id/download_all_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="DOWNLOAD COMPLETE HISTORY"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/login_button_bg"
+        android:layout_margin="16dp"
+        android:elevation="4dp" />
+
+</LinearLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_dental_blue"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Dental Care App"
+        android:textSize="18sp"
+        android:textColor="@color/dental_gray"
+        android:gravity="center"
+        android:layout_marginBottom="40dp" />
+
+    <!-- Profile Button -->
+    <Button
+        android:id="@+id/profile_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/profile_title"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/login_button_bg"
+        android:elevation="4dp"
+        android:layout_marginBottom="15dp" />
+
+    <!-- Browse Dentists Button -->
+    <Button
+        android:id="@+id/browse_dentists_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Browse Dentists"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/login_button_bg"
+        android:elevation="4dp"
+        android:layout_marginBottom="15dp" />
+
+    <!-- My Appointments Button -->
+    <Button
+        android:id="@+id/my_appointments_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="My Appointments"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/login_button_bg"
+        android:elevation="4dp"
+        android:layout_marginBottom="15dp" />
+
+    <!-- Dashboard Button -->
+    <Button
+        android:id="@+id/dashboard_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Dashboard &amp; Reminders"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/login_button_bg"
+        android:elevation="4dp"
+        android:layout_marginBottom="15dp" />
+
+    <!-- Dental History Button -->
+    <Button
+        android:id="@+id/dental_history_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Dental History &amp; Records"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/login_button_bg"
+        android:elevation="4dp"
+        android:layout_marginBottom="15dp" />
+
+    <!-- Emergency Support Button -->
+    <Button
+        android:id="@+id/emergency_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="🚨 Emergency Support"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/red"
+        android:elevation="4dp"
+        android:layout_marginBottom="15dp" />
+
+    <!-- Logout Button -->
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Logout"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/dental_gray"
+        android:elevation="4dp" />
+
+</LinearLayout>
