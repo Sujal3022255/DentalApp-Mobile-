@@ -40,10 +40,13 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     fun updateProfile(user: User) {
         viewModelScope.launch {
             try {
+                _isLoading.value = true
                 userRepository.saveUser(user)
                 _updateStatus.value = Result.success("Profile updated successfully")
+                _isLoading.value = false
             } catch (e: Exception) {
                 _updateStatus.value = Result.failure(e)
+                _isLoading.value = false
             }
         }
     }

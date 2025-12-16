@@ -74,8 +74,8 @@ class ProfileActivity : AppCompatActivity() {
     
     override fun onResume() {
         super.onResume()
-        // Reload user data when returning to the screen
-        viewModel.loadUserData()
+        // Don't reload on resume - the LiveData Flow automatically updates
+        // Only load initially in onCreate
     }
     
     private fun initViews() {
@@ -122,23 +122,12 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.updateStatus.observe(this) { result ->
             result.onSuccess { message ->
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                // Don't clear fields - just show success message
+                // Data is already saved and LiveData will auto-update the UI
             }
             result.onFailure { error ->
                 Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-    
-    private fun clearFormFields() {
-        nameInput.setText("")
-        emailInput.setText("")
-        phoneInput.setText("")
-        dobInput.setText("")
-        addressInput.setText("")
-        profileImageUri = ""
-        // Reset profile image to default
-        profileImage.setImageResource(R.drawable.img)
     }
     
     private fun populateFields(user: User) {

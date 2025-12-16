@@ -8,19 +8,24 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
+import androidx.lifecycle.ViewModelProvider
+import com.example.dental.data.model.AuthState
+import com.example.dental.viewmodel.AuthViewModel
 
 class SignUpActivity : AppCompatActivity() {
     
-    private lateinit var auth: FirebaseAuth
     private lateinit var nameInput: EditText
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var confirmPasswordInput: EditText
     private lateinit var signupButton: Button
     private lateinit var progressBar: ProgressBar
+    
+    private val authViewModel: AuthViewModel by viewModels {
+        ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +37,6 @@ class SignUpActivity : AppCompatActivity() {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowHomeEnabled(true)
             supportActionBar?.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
-
-            // Initialize Firebase Auth
-            auth = FirebaseAuth.getInstance()
             
             nameInput = findViewById(R.id.signup_name_input)
             emailInput = findViewById(R.id.signup_email_input)
@@ -43,6 +45,20 @@ class SignUpActivity : AppCompatActivity() {
             signupButton = findViewById(R.id.signup_button)
             progressBar = findViewById(R.id.signup_progress)
             val alreadyHaveAccount = findViewById<TextView>(R.id.already_have_account)
+
+            // Observe auth state
+            authViewModel.authState.observe(this) { state ->
+                showLoading(state.isLoading)
+                
+                if (state.isSuccess && state.user != null) {
+                    Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show()
+                    navigateToMain()
+                }
+                
+                state.error?.let { error ->
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+                }
+            }
 
             signupButton.setOnClickListener {
                 signUpUser()
@@ -106,37 +122,8 @@ class SignUpActivity : AppCompatActivity() {
             return
         }
 
-        // Show progress
-        showLoading(true)
-
-        // Firebase authentication
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Update user profile with name
-                    val user = auth.currentUser
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(name)
-                        .build()
-                    
-                    user?.updateProfile(profileUpdates)
-                        ?.addOnCompleteListener { profileTask ->
-                            showLoading(false)
-                            
-                            if (profileTask.isSuccessful) {
-                                Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show()
-                                navigateToMain()
-                            } else {
-                                Toast.makeText(this, "Profile update failed", Toast.LENGTH_SHORT).show()
-                                navigateToMain()
-                            }
-                        }
-                } else {
-                    showLoading(false)
-                    val errorMessage = task.exception?.message ?: "Registration failed"
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-                }
-            }
+        // Sign up using ViewModel
+        authViewModel.signUp(name, email, password)
     }
     
     private fun showLoading(isLoading: Boolean) {

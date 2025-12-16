@@ -8,18 +8,22 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import androidx.lifecycle.ViewModelProvider
+import com.example.dental.data.model.AuthState
+import com.example.dental.viewmodel.AuthViewModel
 
 class LoginActivity : AppCompatActivity() {
     
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var loginButton: Button
     private lateinit var progressBar: ProgressBar
+    
+    private val authViewModel: AuthViewModel by viewModels {
+        ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,16 +34,6 @@ class LoginActivity : AppCompatActivity() {
             
             setContentView(R.layout.activity_login)
 
-            // Initialize Firebase Auth
-            auth = FirebaseAuth.getInstance()
-            db = FirebaseFirestore.getInstance()
-            
-            // Check if user is already logged in
-            if (auth.currentUser != null) {
-                checkUserRoleAndNavigate()
-                return
-            }
-
             // Initialize views
             emailInput = findViewById(R.id.email_input)
             passwordInput = findViewById(R.id.password_input)
@@ -47,6 +41,20 @@ class LoginActivity : AppCompatActivity() {
             val forgotPassword = findViewById<TextView>(R.id.forgot_password)
             val signupLink = findViewById<TextView>(R.id.signup_link)
             progressBar = findViewById(R.id.login_progress)
+
+            // Observe auth state
+            authViewModel.authState.observe(this) { state ->
+                showLoading(state.isLoading)
+                
+                if (state.isSuccess && state.user != null) {
+                    Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
+                    navigateToMain()
+                }
+                
+                state.error?.let { error ->
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+                }
+            }
 
             loginButton.setOnClickListener {
                 loginUser()
@@ -96,52 +104,8 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        // Show progress
-        showLoading(true)
-
-        // Firebase authentication
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                showLoading(false)
-                
-                if (task.isSuccessful) {
-                    // Sign in success - check user role
-                    Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
-                    checkUserRoleAndNavigate()
-                } else {
-                    // Sign in failed
-                    val errorMessage = task.exception?.message ?: "Authentication failed"
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-                }
-            }
-    }
-    
-    private fun checkUserRoleAndNavigate() {
-        val userId = auth.currentUser?.uid ?: return
-        
-        // Check if user is a dentist
-        db.collection("dentists").document(userId)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    // User is a dentist
-                    navigateToDentistDashboard()
-                } else {
-                    // User is a patient
-                    navigateToMain()
-                }
-            }
-            .addOnFailureListener {
-                // Default to patient dashboard if check fails
-                navigateToMain()
-            }
-    }
-    
-    private fun navigateToDentistDashboard() {
-        val intent = Intent(this, com.example.dental.view.DentistDashboardActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
+        // Login using ViewModel
+        authViewModel.login(email, password)
     }
     
     private fun showLoading(isLoading: Boolean) {
