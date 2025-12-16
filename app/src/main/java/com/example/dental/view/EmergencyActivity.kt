@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -41,11 +42,13 @@ class EmergencyActivity : AppCompatActivity() {
         try {
             setContentView(R.layout.activity_emergency)
             
-            // Enable back button
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setDisplayShowHomeEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
-            supportActionBar?.title = "Emergency Support"
+            // Hide action bar
+            supportActionBar?.hide()
+            
+            // Setup close button
+            findViewById<ImageView>(R.id.btnCloseEmergency).setOnClickListener {
+                finish()
+            }
             
             initViews()
             setupAdapters()

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title *"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etContentTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Enter title"
+        android:padding="12dp"
+        android:background="@drawable/login_input_bg"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Content *"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etContentText"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:hint="Enter content"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:padding="12dp"
+        android:background="@drawable/login_input_bg"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category *"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etContentCategory"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="e.g., Oral Hygiene, Prevention"
+        android:padding="12dp"
+        android:background="@drawable/login_input_bg" />
+</LinearLayout>

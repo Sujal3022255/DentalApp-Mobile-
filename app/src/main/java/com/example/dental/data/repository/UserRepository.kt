@@ -11,9 +11,10 @@ import com.example.dental.data.model.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+// Create DataStore as a top-level property to ensure singleton
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_prefs")
+
 class UserRepository(private val context: Context) {
-    
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_prefs")
     
     companion object {
         private val USER_ID = stringPreferencesKey("user_id")

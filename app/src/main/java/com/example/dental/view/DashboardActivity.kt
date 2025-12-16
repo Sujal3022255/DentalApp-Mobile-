@@ -3,6 +3,7 @@ package com.example.dental.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -39,6 +40,11 @@ class DashboardActivity : AppCompatActivity() {
         upcomingAppointmentsRecyclerView = findViewById(R.id.upcoming_appointments_recycler)
         noAppointmentsText = findViewById(R.id.no_appointments_text)
         viewAllAppointments = findViewById(R.id.view_all_appointments)
+        
+        // Back button handler
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            onBackPressed()
+        }
     }
     
     private fun setupMenuItems() {

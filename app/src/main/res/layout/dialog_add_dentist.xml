@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dentist Name *"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etDentistName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Enter name"
+        android:padding="12dp"
+        android:background="@drawable/login_input_bg"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email *"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etDentistEmail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Enter email"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:background="@drawable/login_input_bg"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone *"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etDentistPhone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Enter phone"
+        android:inputType="phone"
+        android:padding="12dp"
+        android:background="@drawable/login_input_bg"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Specialization *"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etSpecialization"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="e.g., Orthodontist, Endodontist"
+        android:padding="12dp"
+        android:background="@drawable/login_input_bg" />
+</LinearLayout>

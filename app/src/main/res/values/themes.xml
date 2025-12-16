@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Dental" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.Dental" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary_dental_blue</item>
         <item name="colorPrimaryDark">@color/primary_dark_blue</item>
         <item name="colorAccent">@color/accent_dental_cyan</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="actionBarStyle">@style/CustomActionBarStyle</item>
+        <item name="android:windowBackground">@drawable/common_background</item>
     </style>
 
     <style name="CustomActionBarStyle" parent="Widget.AppCompat.ActionBar">
@@ -20,7 +21,7 @@
     </style>
 
     <!-- Splash Screen Theme -->
-    <style name="Theme.SplashScreen" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
@@ -30,13 +31,13 @@
     </style>
 
     <!-- Login Screen Theme - No Action Bar -->
-    <style name="Theme.Dental.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.Dental.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary_dental_blue</item>
         <item name="colorPrimaryDark">@color/primary_dark_blue</item>
         <item name="colorAccent">@color/accent_dental_cyan</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@drawable/common_background</item>
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>

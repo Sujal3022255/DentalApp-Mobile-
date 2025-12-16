@@ -13,6 +13,7 @@ import com.example.dental.view.MyAppointmentsActivity
 import com.example.dental.view.DashboardActivity
 import com.example.dental.view.DentalHistoryActivity
 import com.example.dental.view.EmergencyActivity
+import com.example.dental.view.AdminDashboardActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -71,6 +72,12 @@ class MainActivity : AppCompatActivity() {
             // Navigate to emergency support
             findViewById<Button>(R.id.emergency_button)?.setOnClickListener {
                 val intent = Intent(this, EmergencyActivity::class.java)
+                startActivity(intent)
+            }
+            
+            // Navigate to admin dashboard
+            findViewById<Button>(R.id.admin_dashboard_button)?.setOnClickListener {
+                val intent = Intent(this, AdminDashboardActivity::class.java)
                 startActivity(intent)
             }
             

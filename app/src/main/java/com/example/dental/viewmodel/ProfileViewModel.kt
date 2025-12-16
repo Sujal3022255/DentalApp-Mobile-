@@ -20,13 +20,19 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     private val _updateStatus = MutableLiveData<Result<String>>()
     val updateStatus: LiveData<Result<String>> = _updateStatus
     
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+    
     fun loadUserData() {
         // Trigger a reload of user data from repository
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 userRepository.refreshUser()
             } catch (e: Exception) {
                 // Silent fail - the LiveData will continue observing
+            } finally {
+                _isLoading.value = false
             }
         }
     }

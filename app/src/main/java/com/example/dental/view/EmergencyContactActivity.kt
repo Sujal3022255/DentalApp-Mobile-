@@ -3,6 +3,7 @@ package com.example.dental.view
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,10 +25,8 @@ class EmergencyContactActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_emergency_contact)
         
-        // Enable back button in action bar with white color
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
+        // Hide action bar
+        supportActionBar?.hide()
         
         initViews()
         observeViewModel()
@@ -40,6 +39,11 @@ class EmergencyContactActivity : AppCompatActivity() {
         phoneInput = findViewById(R.id.emergency_phone_input)
         emailInput = findViewById(R.id.emergency_email_input)
         saveButton = findViewById(R.id.save_emergency_button)
+        
+        // Close button handler
+        findViewById<ImageView>(R.id.btnCloseEmergency).setOnClickListener {
+            finish()
+        }
     }
     
     private fun observeViewModel() {

@@ -7,9 +7,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -33,6 +36,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var addressInput: EditText
     private lateinit var saveButton: Button
     private lateinit var emergencyButton: Button
+    private lateinit var loadingIndicator: ProgressBar
+    private lateinit var profileContent: ScrollView
     
     private val pickImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -62,6 +67,15 @@ class ProfileActivity : AppCompatActivity() {
         initViews()
         observeViewModel()
         setupClickListeners()
+        
+        // Load user data when activity is created
+        viewModel.loadUserData()
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Reload user data when returning to the screen
+        viewModel.loadUserData()
     }
     
     private fun initViews() {
@@ -73,6 +87,8 @@ class ProfileActivity : AppCompatActivity() {
         addressInput = findViewById(R.id.profile_address_input)
         saveButton = findViewById(R.id.save_profile_button)
         emergencyButton = findViewById(R.id.emergency_contact_button)
+        loadingIndicator = findViewById(R.id.loading_indicator)
+        profileContent = findViewById(R.id.profile_content)
         
         // Close button handler
         findViewById<ImageView>(R.id.btnCloseProfile).setOnClickListener {
@@ -81,17 +97,32 @@ class ProfileActivity : AppCompatActivity() {
     }
     
     private fun observeViewModel() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                loadingIndicator.visibility = View.VISIBLE
+                profileContent.visibility = View.GONE
+            } else {
+                loadingIndicator.visibility = View.GONE
+                // Only show content if we have user data
+                if (viewModel.user.value != null) {
+                    profileContent.visibility = View.VISIBLE
+                }
+            }
+        }
+        
         viewModel.user.observe(this) { user ->
             user?.let {
                 populateFields(it)
+                // Ensure content is visible when data is loaded
+                loadingIndicator.visibility = View.GONE
+                profileContent.visibility = View.VISIBLE
             }
         }
         
         viewModel.updateStatus.observe(this) { result ->
             result.onSuccess { message ->
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                // Clear form fields after successful save
-                clearFormFields()
+                // Don't clear fields - just show success message
             }
             result.onFailure { error ->
                 Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
@@ -107,7 +138,7 @@ class ProfileActivity : AppCompatActivity() {
         addressInput.setText("")
         profileImageUri = ""
         // Reset profile image to default
-        profileImage.setImageResource(R.drawable.doctor)
+        profileImage.setImageResource(R.drawable.img)
     }
     
     private fun populateFields(user: User) {
@@ -121,7 +152,7 @@ class ProfileActivity : AppCompatActivity() {
         if (profileImageUri.isNotEmpty()) {
             Glide.with(this).load(Uri.parse(profileImageUri)).circleCrop().into(profileImage)
         } else {
-            profileImage.setImageResource(R.drawable.doctor)
+            profileImage.setImageResource(R.drawable.img)
         }
     }
     

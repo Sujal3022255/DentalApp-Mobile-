@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp"
-    android:background="@color/white">
+    android:layout_height="match_parent">
+
+    <!-- Background Image -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/img"
+        android:scaleType="centerCrop"
+        android:contentDescription="Background"
+        android:alpha="0.3" />
+
+    <!-- Content with semi-transparent overlay -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#99FFFFFF">
 
     <TextView
         android:layout_width="wrap_content"
@@ -104,6 +118,19 @@
         android:elevation="4dp"
         android:layout_marginBottom="15dp" />
 
+    <!-- Admin Dashboard Button -->
+    <Button
+        android:id="@+id/admin_dashboard_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="⚙️ Admin Dashboard"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="#673AB7"
+        android:elevation="4dp"
+        android:layout_marginBottom="15dp" />
+
     <!-- Logout Button -->
     <Button
         android:id="@+id/logout_button"
@@ -116,4 +143,6 @@
         android:backgroundTint="@color/dental_gray"
         android:elevation="4dp" />
 
-</LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>
