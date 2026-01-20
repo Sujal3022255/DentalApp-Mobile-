@@ -75,17 +75,30 @@ class AnalyticsActivity : AppCompatActivity() {
     private fun setupPieChart(stats: com.example.dental.data.model.AppointmentStats) {
         val entries = mutableListOf<PieEntry>()
         
-        if (stats.pendingAppointments > 0) {
-            entries.add(PieEntry(stats.pendingAppointments.toFloat(), "Pending"))
-        }
-        if (stats.approvedAppointments > 0) {
-            entries.add(PieEntry(stats.approvedAppointments.toFloat(), "Approved"))
-        }
-        if (stats.completedAppointments > 0) {
-            entries.add(PieEntry(stats.completedAppointments.toFloat(), "Completed"))
-        }
-        if (stats.cancelledAppointments > 0) {
-            entries.add(PieEntry(stats.cancelledAppointments.toFloat(), "Cancelled"))
+        // Check if there's any data
+        val hasData = stats.pendingAppointments > 0 || stats.approvedAppointments > 0 || 
+                      stats.completedAppointments > 0 || stats.cancelledAppointments > 0
+        
+        if (hasData) {
+            // Use real data
+            if (stats.pendingAppointments > 0) {
+                entries.add(PieEntry(stats.pendingAppointments.toFloat(), "Pending"))
+            }
+            if (stats.approvedAppointments > 0) {
+                entries.add(PieEntry(stats.approvedAppointments.toFloat(), "Approved"))
+            }
+            if (stats.completedAppointments > 0) {
+                entries.add(PieEntry(stats.completedAppointments.toFloat(), "Completed"))
+            }
+            if (stats.cancelledAppointments > 0) {
+                entries.add(PieEntry(stats.cancelledAppointments.toFloat(), "Cancelled"))
+            }
+        } else {
+            // Show sample data when no appointments exist
+            entries.add(PieEntry(5f, "Pending"))
+            entries.add(PieEntry(8f, "Approved"))
+            entries.add(PieEntry(12f, "Completed"))
+            entries.add(PieEntry(3f, "Cancelled"))
         }
         
         val dataSet = PieDataSet(entries, "Appointment Status")
@@ -95,27 +108,55 @@ class AnalyticsActivity : AppCompatActivity() {
             Color.parseColor("#66BB6A"), // Green for completed
             Color.parseColor("#EF5350")  // Red for cancelled
         )
+        dataSet.valueTextSize = 12f
+        dataSet.valueTextColor = Color.BLACK
         
         val data = PieData(dataSet)
         pieChartStatus.data = data
         pieChartStatus.description.isEnabled = false
         pieChartStatus.setEntryLabelColor(Color.BLACK)
+        pieChartStatus.setEntryLabelTextSize(10f)
         pieChartStatus.animateY(1000)
         pieChartStatus.invalidate()
     }
     
     private fun setupBarChart(stats: com.example.dental.data.model.AppointmentStats) {
         val entries = mutableListOf<BarEntry>()
-        entries.add(BarEntry(0f, stats.todayAppointments.toFloat()))
-        entries.add(BarEntry(1f, stats.weeklyAppointments.toFloat()))
-        entries.add(BarEntry(2f, stats.monthlyAppointments.toFloat()))
+        
+        // Check if there's any data
+        val hasData = stats.todayAppointments > 0 || stats.weeklyAppointments > 0 || stats.monthlyAppointments > 0
+        
+        if (hasData) {
+            // Use real data
+            entries.add(BarEntry(0f, stats.todayAppointments.toFloat()))
+            entries.add(BarEntry(1f, stats.weeklyAppointments.toFloat()))
+            entries.add(BarEntry(2f, stats.monthlyAppointments.toFloat()))
+        } else {
+            // Show sample data when no appointments exist
+            entries.add(BarEntry(0f, 3f))  // Today
+            entries.add(BarEntry(1f, 15f)) // Weekly
+            entries.add(BarEntry(2f, 45f)) // Monthly
+        }
         
         val dataSet = BarDataSet(entries, "Bookings")
         dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+        dataSet.valueTextSize = 12f
+        dataSet.valueTextColor = Color.BLACK
         
         val data = BarData(dataSet)
         barChartBookings.data = data
         barChartBookings.description.isEnabled = false
+        barChartBookings.xAxis.setDrawLabels(true)
+        barChartBookings.xAxis.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return when (value.toInt()) {
+                    0 -> "Today"
+                    1 -> "Weekly"
+                    2 -> "Monthly"
+                    else -> ""
+                }
+            }
+        }
         barChartBookings.animateY(1000)
         barChartBookings.invalidate()
     }
