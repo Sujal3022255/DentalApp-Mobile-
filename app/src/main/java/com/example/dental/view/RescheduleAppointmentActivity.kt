@@ -93,6 +93,7 @@ class RescheduleAppointmentActivity : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
             this,
+            R.style.CustomDatePickerDialog,
             { _, year, month, dayOfMonth ->
                 calendar.set(year, month, dayOfMonth)
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
