@@ -67,10 +67,10 @@ class BookAppointmentActivity : AppCompatActivity() {
         // Time slots spinner
         val timeAdapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_item,
             dentist.availableTimeSlots
         )
-        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        timeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         timeSpinner.adapter = timeAdapter
         
         timeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -83,10 +83,10 @@ class BookAppointmentActivity : AppCompatActivity() {
         // Appointment type spinner
         val typeAdapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_item,
             AppointmentType.values().map { it.name.replace("_", " ") }
         )
-        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         appointmentTypeSpinner.adapter = typeAdapter
     }
     

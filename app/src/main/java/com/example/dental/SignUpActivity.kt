@@ -51,8 +51,8 @@ class SignUpActivity : AppCompatActivity() {
                 showLoading(state.isLoading)
                 
                 if (state.isSuccess && state.user != null) {
-                    Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show()
-                    navigateToMain()
+                    Toast.makeText(this, "Account created successfully! Please login.", Toast.LENGTH_SHORT).show()
+                    navigateToLogin()
                 }
                 
                 state.error?.let { error ->
@@ -144,8 +144,8 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
     
-    private fun navigateToMain() {
-        val intent = Intent(this, MainActivity::class.java)
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()

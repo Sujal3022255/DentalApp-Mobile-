@@ -3,6 +3,7 @@ package com.example.dental.view
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -28,8 +29,11 @@ class AnalyticsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analytics)
         
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Analytics"
+        supportActionBar?.hide()
+        
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
         
         initViews()
         observeViewModel()
