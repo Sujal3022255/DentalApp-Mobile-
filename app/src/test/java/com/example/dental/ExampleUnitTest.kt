@@ -2,7 +2,8 @@ package com.example.dental
 
 import org.junit.Test
 import org.junit.Assert.*
-import org.mockito.Mockito.*
+import org.mockito.Mockito.doAnswer
+import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -21,26 +22,32 @@ class ExampleUnitTest {
 
     @Test
     fun login_success_test() {
+        // Arrange - Create mock repository and viewModel
         val repo = mock<UserRepo>()
         val viewModel = UserViewModel(repo)
 
+        // Configure mock behavior - when login is called, invoke callback with success
         doAnswer { invocation ->
             val callback = invocation.getArgument<(Boolean, String) -> Unit>(2)
             callback(true, "Login success")
             null
         }.`when`(repo).login(eq("test@gmail.com"), eq("123456"), any())
 
+        // Variables to capture callback results
         var successResult = false
         var messageResult = ""
 
+        // Act - Call login method
         viewModel.login("test@gmail.com", "123456") { success, msg ->
             successResult = success
             messageResult = msg
         }
 
-        assertTrue(successResult)
+        // Assert - Verify the results
+        assertTrue("Login should be successful", successResult)
         assertEquals("Login success", messageResult)
 
+        // Verify - Ensure repository method was called with correct parameters
         verify(repo).login(eq("test@gmail.com"), eq("123456"), any())
     }
 }
