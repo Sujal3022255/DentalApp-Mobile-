@@ -2,11 +2,11 @@ package com.example.dental
 
 import org.junit.Test
 import org.junit.Assert.*
-import org.mockito.Mockito.doAnswer
-import org.mockito.Mockito.verify
-import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
+//import org.mockito.Mockito.doAnswer
+//import org.mockito.Mockito.verify
+//import org.mockito.kotlin.any
+//import org.mockito.kotlin.eq
+//import org.mockito.kotlin.mock
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -50,15 +50,15 @@ class ExampleUnitTest {
         // Verify - Ensure repository method was called with correct parameters
         verify(repo).login(eq("test@gmail.com"), eq("123456"), any())
     }
-}
 
-// Mock interfaces for the test
-interface UserRepo {
-    fun login(email: String, password: String, callback: (Boolean, String) -> Unit)
-}
-
-class UserViewModel(private val repo: UserRepo) {
-    fun login(email: String, password: String, callback: (Boolean, String) -> Unit) {
-        repo.login(email, password, callback)
+    // Mock interfaces for the test
+    interface UserRepo {
+        fun login(email: String, password: String, callback: (Boolean, String) -> Unit)
+    }
+    
+    class UserViewModel(private val repo: UserRepo) {
+        fun login(email: String, password: String, callback: (Boolean, String) -> Unit) {
+            repo.login(email, password, callback)
+        }
     }
 }
