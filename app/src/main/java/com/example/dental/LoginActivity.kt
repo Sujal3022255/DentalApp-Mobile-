@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.dental.data.model.AuthState
 import com.example.dental.viewmodel.AuthViewModel
+import com.example.dental.view.AdminDashboardActivity
+import com.example.dental.view.DentistDashboardActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
     
@@ -20,6 +24,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordInput: EditText
     private lateinit var loginButton: Button
     private lateinit var progressBar: ProgressBar
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     
     private val authViewModel: AuthViewModel by viewModels {
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
@@ -33,6 +39,10 @@ class LoginActivity : AppCompatActivity() {
             supportActionBar?.hide()
             
             setContentView(R.layout.activity_login)
+
+            // Initialize Firebase
+            auth = FirebaseAuth.getInstance()
+            db = FirebaseFirestore.getInstance()
 
             // Initialize views
             emailInput = findViewById(R.id.email_input)
@@ -48,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
                 
                 if (state.isSuccess && state.user != null) {
                     Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
-                    navigateToMain()
+                    checkUserRoleAndNavigate()
                 }
                 
                 state.error?.let { error ->
@@ -122,7 +132,47 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     
-    private fun navigateToMain() {
+    private fun checkUserRoleAndNavigate() {
+        val userId = auth.currentUser?.uid ?: return
+        
+        showLoading(true)
+        
+        // Check if user is admin
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                showLoading(false)
+                val role = document.getString("role")?.lowercase() ?: "patient"
+                
+                when (role) {
+                    "admin" -> navigateToAdminDashboard()
+                    "dentist" -> navigateToDentistDashboard()
+                    else -> navigateToPatientDashboard()
+                }
+            }
+            .addOnFailureListener { e ->
+                showLoading(false)
+                // If role not found, default to patient dashboard
+                Toast.makeText(this, "Role not found, logging in as patient", Toast.LENGTH_SHORT).show()
+                navigateToPatientDashboard()
+            }
+    }
+    
+    private fun navigateToAdminDashboard() {
+        val intent = Intent(this, AdminDashboardActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+    
+    private fun navigateToDentistDashboard() {
+        val intent = Intent(this, DentistDashboardActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+    
+    private fun navigateToPatientDashboard() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
