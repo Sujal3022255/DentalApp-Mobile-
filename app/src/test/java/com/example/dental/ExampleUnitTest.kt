@@ -2,11 +2,11 @@ package com.example.dental
 
 import org.junit.Test
 import org.junit.Assert.*
-//import org.mockito.Mockito.doAnswer
-//import org.mockito.Mockito.verify
-//import org.mockito.kotlin.any
-//import org.mockito.kotlin.eq
-//import org.mockito.kotlin.mock
+import org.mockito.Mockito.doAnswer
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
 
 /**
  * Example local unit test, which will execute on the development machine (host).
