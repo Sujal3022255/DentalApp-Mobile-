@@ -15,10 +15,14 @@ import com.example.dental.view.DentalHistoryActivity
 import com.example.dental.view.EmergencyActivity
 import com.example.dental.view.AdminDashboardActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import android.view.View
 
 class MainActivity : AppCompatActivity() {
     
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+    private lateinit var adminDashboardButton: Button
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +32,16 @@ class MainActivity : AppCompatActivity() {
             
             // Initialize Firebase Auth
             auth = FirebaseAuth.getInstance()
+            db = FirebaseFirestore.getInstance()
             
             // Hide action bar
             supportActionBar?.hide()
+            
+            // Get admin button reference
+            adminDashboardButton = findViewById(R.id.admin_dashboard_button)
+            
+            // Check user role for admin button visibility
+            checkUserRoleForAdminAccess()
             
             // Handle back button with OnBackPressedDispatcher
             onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -108,5 +119,21 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+    
+    private fun checkUserRoleForAdminAccess() {
+        val userId = auth.currentUser?.uid ?: return
+        
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                val role = document.getString("role")?.lowercase() ?: "patient"
+                // Show admin button only for admins
+                adminDashboardButton.visibility = if (role == "admin") View.VISIBLE else View.GONE
+            }
+            .addOnFailureListener {
+                // Hide admin button on error
+                adminDashboardButton.visibility = View.GONE
+            }
     }
 }
