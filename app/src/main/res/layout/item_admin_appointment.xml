@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/patient_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patient: John Doe"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/dentist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dentist: Dr. Smith"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/primary_dental_blue" />
+
+        <TextView
+            android:id="@+id/appointment_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025-12-15 at 10:00 AM"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/dental_gray" />
+
+        <TextView
+            android:id="@+id/treatment_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Root Canal"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/dental_gray" />
+
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status: Pending"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/orange" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/btn_approve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Approve"
+                android:backgroundTint="@color/green"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btn_decline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Decline"
+                android:backgroundTint="@color/red" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
