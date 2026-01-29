@@ -9,7 +9,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dental.R
+import com.example.dental.LoginActivity
 import com.example.dental.viewmodel.AdminViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class AdminDashboardActivity : AppCompatActivity() {
     
@@ -25,6 +28,10 @@ class AdminDashboardActivity : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Security check - verify admin role
+        checkAdminRole()
+        
         setContentView(R.layout.activity_admin_dashboard)
         
         supportActionBar?.hide()
@@ -97,5 +104,33 @@ class AdminDashboardActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.loadDashboardStats()
+    }
+    
+    private fun checkAdminRole() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId == null) {
+            redirectToLogin("Please login first")
+            return
+        }
+        
+        FirebaseFirestore.getInstance().collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                val role = document.getString("role")?.lowercase() ?: "patient"
+                if (role != "admin") {
+                    redirectToLogin("Access Denied: Admin privileges required")
+                }
+            }
+            .addOnFailureListener {
+                redirectToLogin("Access Denied: Unable to verify role")
+            }
+    }
+    
+    private fun redirectToLogin(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }
