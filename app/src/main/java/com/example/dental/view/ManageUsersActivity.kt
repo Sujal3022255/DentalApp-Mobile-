@@ -13,6 +13,7 @@ import com.example.dental.data.model.Dentist
 import com.example.dental.data.model.User
 import com.example.dental.viewmodel.AdminViewModel
 import com.google.android.material.tabs.TabLayout
+import com.example.dental.ui.adapter.AdminDentistAdapter
 
 class ManageUsersActivity : AppCompatActivity() {
     
@@ -21,6 +22,7 @@ class ManageUsersActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var btnAddUser: Button
+    private lateinit var dentistAdapter: AdminDentistAdapter
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,12 @@ class ManageUsersActivity : AppCompatActivity() {
         btnAddUser = findViewById(R.id.btnAddUser)
         
         recyclerView.layoutManager = LinearLayoutManager(this)
+        
+        dentistAdapter = AdminDentistAdapter(
+            onEditClick = { dentist -> showEditDentistDialog(dentist) },
+            onDeleteClick = { dentist -> confirmDeleteDentist(dentist) }
+        )
+        recyclerView.adapter = dentistAdapter
     }
     
     private fun observeViewModel() {
@@ -52,7 +60,7 @@ class ManageUsersActivity : AppCompatActivity() {
         }
         
         viewModel.dentists.observe(this) { dentists ->
-            // Set up dentist adapter
+            dentistAdapter.submitList(dentists)
             Toast.makeText(this, "Loaded ${dentists.size} dentists", Toast.LENGTH_SHORT).show()
         }
         
@@ -103,6 +111,39 @@ class ManageUsersActivity : AppCompatActivity() {
                     specialty = etSpecialization.text.toString()
                 )
                 viewModel.addDentist(dentist)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+    
+    private fun showEditDentistDialog(dentist: Dentist) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_dentist, null)
+        val etName = dialogView.findViewById<EditText>(R.id.etDentistName)
+        val etSpecialization = dialogView.findViewById<EditText>(R.id.etSpecialization)
+        
+        etName.setText(dentist.name)
+        etSpecialization.setText(dentist.specialty)
+        
+        AlertDialog.Builder(this)
+            .setTitle("Edit Dentist")
+            .setView(dialogView)
+            .setPositiveButton("Update") { _, _ ->
+                val updatedDentist = dentist.copy(
+                    name = etName.text.toString(),
+                    specialty = etSpecialization.text.toString()
+                )
+                viewModel.updateDentist(updatedDentist)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+    
+    private fun confirmDeleteDentist(dentist: Dentist) {
+        AlertDialog.Builder(this)
+            .setTitle("Delete Dentist")
+            .setMessage("Are you sure you want to delete ${dentist.name}?")
+            .setPositiveButton("Delete") { _, _ ->
+                viewModel.deleteDentist(dentist.id)
             }
             .setNegativeButton("Cancel", null)
             .show()
