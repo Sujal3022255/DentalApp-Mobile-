@@ -14,12 +14,14 @@ import com.example.dental.R
 import com.example.dental.data.model.Appointment
 import com.example.dental.viewmodel.AdminViewModel
 import com.google.android.material.textfield.TextInputEditText
+import com.example.dental.ui.adapter.AdminAppointmentAdapter
 
 class ManageAppointmentsActivity : AppCompatActivity() {
     
     private val viewModel: AdminViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var appointmentAdapter: AdminAppointmentAdapter
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,12 @@ class ManageAppointmentsActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         
         recyclerView.layoutManager = LinearLayoutManager(this)
+        
+        appointmentAdapter = AdminAppointmentAdapter(
+            onApproveClick = { appointment -> approveAppointment(appointment.id) },
+            onDeclineClick = { appointment -> declineAppointment(appointment.id) }
+        )
+        recyclerView.adapter = appointmentAdapter
     }
     
     private fun observeViewModel() {
@@ -47,7 +55,7 @@ class ManageAppointmentsActivity : AppCompatActivity() {
         }
         
         viewModel.appointments.observe(this) { appointments ->
-            // Set up appointments adapter with approve/decline actions
+            appointmentAdapter.submitList(appointments)
             Toast.makeText(this, "Loaded ${appointments.size} appointments", Toast.LENGTH_SHORT).show()
         }
         
