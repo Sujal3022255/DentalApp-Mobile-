@@ -12,6 +12,7 @@ import com.example.dental.R
 import com.example.dental.data.model.DentalTip
 import com.example.dental.viewmodel.AdminViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.example.dental.ui.adapter.AdminContentAdapter
 
 class ManageContentActivity : AppCompatActivity() {
     
@@ -19,6 +20,7 @@ class ManageContentActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var btnAddContent: Button
+    private lateinit var contentAdapter: AdminContentAdapter
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +42,12 @@ class ManageContentActivity : AppCompatActivity() {
         btnAddContent = findViewById(R.id.btnAddContent)
         
         recyclerView.layoutManager = LinearLayoutManager(this)
+        
+        contentAdapter = AdminContentAdapter(
+            onEditClick = { tip -> editContent(tip) },
+            onDeleteClick = { tip -> deleteContent(tip.id) }
+        )
+        recyclerView.adapter = contentAdapter
     }
     
     private fun observeViewModel() {
@@ -48,7 +56,7 @@ class ManageContentActivity : AppCompatActivity() {
         }
         
         viewModel.dentalTips.observe(this) { tips ->
-            // Set up content adapter with edit/delete actions
+            contentAdapter.submitList(tips)
             Toast.makeText(this, "Loaded ${tips.size} tips", Toast.LENGTH_SHORT).show()
         }
         
